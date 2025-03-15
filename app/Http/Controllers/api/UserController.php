@@ -13,73 +13,118 @@ class UserController extends Controller
     {
         $search = $request->input('search');
 
-        // Jika ada input pencarian, filter data
         $users = User::when($search, function ($query, $search) {
             return $query->where('username', 'LIKE', "%{$search}%")
                 ->orWhere('email', 'LIKE', "%{$search}%")
                 ->orWhere('role', 'LIKE', "%{$search}%");
         })->get();
 
-        $title = 'User Admin';
-
-        return view('admin.user', compact('users', 'title'));
+        return response()->json([
+            'success' => true,
+            'message' => 'Users retrieved successfully',
+            'data' => $users
+        ]);
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'username' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-            'role' => 'required|in:super admin,admin,user',
-        ]);
-        // dd($request);
-        User::create([
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'username' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:6',
+                'role' => 'required|in:super admin,admin,user',
+            ]);
 
-        return redirect()->route('users.index')->with('success', 'User created successfully');
+            $user = User::create([
+                'username' => $validatedData['username'],
+                'email' => $validatedData['email'],
+                'password' => Hash::make($validatedData['password']),
+                'role' => $validatedData['role'],
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'User created successfully',
+                'data' => $user
+            ], 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
-    // Update a user
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
-        if (!$user) {
-            return redirect()->back()->with('error', 'User not found');
+        try {
+            $user = User::find($id);
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User not found'
+                ], 404);
+            }
+
+            $validatedData = $request->validate([
+                'username' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+                'password' => 'sometimes|required|string|min:6',
+                'role' => 'required|in:super admin,admin,user',
+            ]);
+
+            $user->username = $validatedData['username'];
+            $user->email = $validatedData['email'];
+            $user->role = $validatedData['role'];
+
+            if (!empty($validatedData['password'])) {
+                $user->password = Hash::make($validatedData['password']);
+            }
+
+            $user->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'User updated successfully',
+                'data' => $user
+            ], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $request->validate([
-            'username' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
-            'password' => 'sometimes|required|string|min:6',
-            'role' => 'required|in:super admin,admin,user',
-        ]);
-
-        $user->username = $request->username;
-        $user->email = $request->email;
-        $user->role = $request->role;
-
-        if ($request->has('password')) {
-            $user->password = Hash::make($request->password);
-        }
-
-        $user->save();
-
-        return redirect()->route('users.index')->with('success', 'User updated successfully');
     }
 
     public function destroy($id)
     {
         $user = User::find($id);
         if (!$user) {
-            return redirect()->back()->with('error', 'User not found');
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ], 404);
         }
 
         $user->delete();
-        return redirect()->route('users.index')->with('success', 'User deleted successfully');
+        return response()->json([
+            'success' => true,
+            'message' => 'User deleted successfully'
+        ]);
     }
 }
