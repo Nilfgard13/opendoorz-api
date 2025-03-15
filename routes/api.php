@@ -15,7 +15,7 @@ use App\Http\Controllers\api\CategoryLocationController;
 Route::get('/', [LandingpageController::class, 'homeIndex'])->name('user.index');
 Route::get('/details-property/{id}', [LandingpageController::class, 'detailsIndex'])->name('user.show');
 Route::get('/property', [LandingpageController::class, 'propertyIndex'])->name('user.propertyIndex');
-Route::get('/contact', [LandingpageController::class, 'contactIndex'])->name('user.contactIndex');
+// Route::get('/contact', [LandingpageController::class, 'contactIndex'])->name('user.contactIndex');
 
 //admin
 Route::get('/home-admin', [DashboardController::class, 'countProperties'])->name('admin.dashboard');
@@ -30,8 +30,6 @@ Route::delete('/user-delete/{id}', [UserController::class, 'destroy'])->name('us
 //property admin
 Route::get('/property-admin', [PropertyController::class, 'index'])->name('property.index');
 Route::post('/property-create', [PropertyController::class, 'store'])->name('property.store');
-Route::get('/form-property', [PropertyController::class, 'showCategory'])->name('property.showCategory');
-Route::get('/property-edit/{id}', [PropertyController::class, 'edit'])->name('property.edit');
 Route::put('/property-update/{id}', [PropertyController::class, 'update'])->name('property.update');
 Route::delete('/property-delete/{id}', [PropertyController::class, 'destroy'])->name('property.destroy');
 

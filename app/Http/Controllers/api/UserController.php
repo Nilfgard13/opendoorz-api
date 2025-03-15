@@ -10,17 +10,50 @@ use Illuminate\Support\Facades\Hash;
 
 /**
  * @OA\Info(
- *      version="1.0.0",
- *      title="Opendoorz User API Documentation",
- *      description="Dokumentasi API untuk mengelola User",
- *      @OA\Contact(
- *          email="fachrizalfazza@gmail.com"
- *      ),
+ *      title="API Documentation",
+ *      version="1.0",
+ *      description="Dokumentasi API untuk CRUD User"
+ * )
+ *
+ * @OA\Tag(
+ *     name="Users",
+ *     description="API untuk mengelola User"
  * )
  */
 class UserController extends Controller
 {
-    
+    /**
+     * @OA\Get(
+     *     path="/api/user-admin",
+     *     tags={"Users"},
+     *     summary="Menampilkan daftar pengguna",
+     *     description="Mengambil daftar pengguna dengan fitur pencarian berdasarkan username, email, atau role",
+     *     @OA\Parameter(
+     *         name="search",
+     *         in="query",
+     *         description="Filter pengguna berdasarkan username, email, atau role",
+     *         required=false,
+     *         @OA\Schema(type="string", example="admin")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Users retrieved successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Users retrieved successfully"),
+     *             @OA\Property(property="data", type="array",
+     *                 @OA\Items(
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="username", type="string", example="john_doe"),
+     *                     @OA\Property(property="email", type="string", example="john@example.com"),
+     *                     @OA\Property(property="role", type="string", example="admin")
+     *                 )
+     *             )
+     *         )
+     *     )
+     * )
+     */
     public function index(Request $request)
     {
         $search = $request->input('search');
@@ -30,6 +63,14 @@ class UserController extends Controller
                 ->orWhere('email', 'LIKE', "%{$search}%")
                 ->orWhere('role', 'LIKE', "%{$search}%");
         })->get();
+
+        if ($users->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No users found',
+                'data' => []
+            ], 404);
+        }
 
         return response()->json([
             'success' => true,

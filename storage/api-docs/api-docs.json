@@ -1,14 +1,79 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Opendoorz User API Documentation",
-        "description": "Dokumentasi API untuk mengelola User",
-        "contact": {
-            "email": "fachrizalfazza@gmail.com"
-        },
-        "version": "1.0.0"
+        "title": "API Documentation",
+        "description": "Dokumentasi API untuk CRUD User",
+        "version": "1.0"
     },
     "paths": {
+        "/api/user-admin": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Menampilkan daftar pengguna",
+                "description": "Mengambil daftar pengguna dengan fitur pencarian berdasarkan username, email, atau role",
+                "operationId": "7f375b66152961b6eb54072b3bb24b93",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Filter pengguna berdasarkan username, email, atau role",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "admin"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Users retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Users retrieved successfully"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "username": {
+                                                        "type": "string",
+                                                        "example": "john_doe"
+                                                    },
+                                                    "email": {
+                                                        "type": "string",
+                                                        "example": "john@example.com"
+                                                    },
+                                                    "role": {
+                                                        "type": "string",
+                                                        "example": "admin"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/user-create": {
             "post": {
                 "tags": [
@@ -211,7 +276,7 @@
     "tags": [
         {
             "name": "Users",
-            "description": "Users"
+            "description": "API untuk mengelola User"
         }
     ]
 }
