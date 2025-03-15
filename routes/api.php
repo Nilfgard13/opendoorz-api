@@ -53,6 +53,7 @@ Route::post('/rotator-create', [NomorController::class, 'store'])->name('rotator
 Route::put('/rotator-update/{id}', [NomorController::class, 'update'])->name('rotator.update');
 Route::delete('/rotator-delete/{id}', [NomorController::class, 'destroy'])->name('rotator.destroy');
 Route::get('/show-link/{id?}', [NomorController::class, 'showlink'])->name('rotator.showLink');
+Route::get('/chat-show/{id}', [NomorController::class, 'chatShow'])->name('rotator.chatShow');
 
 //review-admin
 Route::get('/review-admin', [ReviewController::class, 'index'])->name('review.index');

@@ -12,7 +12,6 @@ class ReviewController extends Controller
     {
         $search = $request->input('search');
 
-        // Jika ada input pencarian, filter data
         $reviews = Review::when($search, function ($query, $search) {
             return $query->where('name', 'LIKE', "%{$search}%")
                 ->orWhere('email', 'LIKE', "%{$search}%")
@@ -20,40 +19,66 @@ class ReviewController extends Controller
                 ->orWhere('deskripsi', 'LIKE', "%{$search}%");
         })->get();
 
-        $title = 'Review Admin';
-
-        return view('admin.review', compact('reviews', 'title'));
+        return response()->json([
+            'success' => true,
+            'message' => 'Review retrieved successfully',
+            'data' => $reviews
+        ]);
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:reviews',
-            'nomor' => 'required|numeric',
-            'deskripsi' => 'required|string|max:255',
-        ]);
+        try {
+            $review = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:reviews',
+                'nomor' => 'required|numeric',
+                'deskripsi' => 'required|string|max:255',
+            ]);
 
-        // $title = 'Review Admin';
+            // $title = 'Review Admin';
 
-        Review::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'nomor' => $request->nomor,
-            'deskripsi' => $request->deskripsi,
-        ]);
+            Review::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'nomor' => $request->nomor,
+                'deskripsi' => $request->deskripsi,
+            ]);
 
-        return redirect()->route('user.index')->with('success', 'Review Anda Terkirim');
+            return response()->json([
+                'success' => true,
+                'message' => 'Review created successfully',
+                'data' => $review
+            ], 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Review created successfully',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Review created successfully',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function destroy($id)
     {
         $review = Review::find($id);
         if (!$review) {
-            return redirect()->back()->with('error', 'User not found');
+            return response()->json([
+                'success' => false,
+                'message' => 'Review not found'
+            ], 404);
         }
 
         $review->delete();
-        return redirect()->route('review.index')->with('success', 'Review deleted successfully');
+        return response()->json([
+            'success' => true,
+            'message' => 'Review deleted successfully'
+        ]);
     }
 }

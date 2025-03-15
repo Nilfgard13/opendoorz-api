@@ -7,8 +7,20 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 
+
+/**
+ * @OA\Info(
+ *      version="1.0.0",
+ *      title="Opendoorz User API Documentation",
+ *      description="Dokumentasi API untuk mengelola User",
+ *      @OA\Contact(
+ *          email="fachrizalfazza@gmail.com"
+ *      ),
+ * )
+ */
 class UserController extends Controller
 {
+    
     public function index(Request $request)
     {
         $search = $request->input('search');
@@ -26,6 +38,26 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/user-create",
+     *     summary="Create a new user",
+     *     tags={"Users"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"username","email","password","role"},
+     *             @OA\Property(property="username", type="string", example="johndoe"),
+     *             @OA\Property(property="email", type="string", format="email", example="johndoe@example.com"),
+     *             @OA\Property(property="password", type="string", format="password", example="password123"),
+     *             @OA\Property(property="role", type="string", enum={"super admin","admin","user"}, example="admin"),
+     *         )
+     *     ),
+     *     @OA\Response(response=201, description="User created successfully"),
+     *     @OA\Response(response=400, description="Validation error"),
+     *     @OA\Response(response=500, description="Internal server error")
+     * )
+     */
     public function store(Request $request)
     {
         try {
@@ -63,6 +95,34 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/user-update/{id}",
+     *     summary="Update a user",
+     *     tags={"Users"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="User ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"username","email","role"},
+     *             @OA\Property(property="username", type="string", example="john_updated"),
+     *             @OA\Property(property="email", type="string", format="email", example="newemail@example.com"),
+     *             @OA\Property(property="role", type="string", enum={"super admin","admin","user"}, example="admin"),
+     *             @OA\Property(property="password", type="string", format="password", example="password123", nullable=true),
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="User updated successfully"),
+     *     @OA\Response(response=404, description="User not found"),
+     *     @OA\Response(response=422, description="Validation error"),
+     *     @OA\Response(response=500, description="Internal server error")
+     * )
+     */
     public function update(Request $request, $id)
     {
         try {
@@ -111,6 +171,38 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/user-delete/{id}",
+     *     summary="Delete a user by ID",
+     *     tags={"Users"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="User ID",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User deleted successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="User deleted successfully")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="User not found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="User not found")
+     *         )
+     *     )
+     * )
+     */
     public function destroy($id)
     {
         $user = User::find($id);

@@ -18,69 +18,119 @@ class NomorController extends Controller
                 ->orWhere('nomor', 'LIKE', "%{$search}%");
         })->get();
 
-        $title = 'Rotator Admin';
-
-        return view('admin.rotator', compact('nomors', 'title'));
+        return response()->json([
+            'success' => true,
+            'message' => 'User retrieved successfully',
+            'data' => $nomors
+        ]);
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'username' => 'required|string|max:255',
-            'nomor' => 'required|numeric',
-        ]);
-        // dd($request);
-        Nomor::create([
-            'username' => $request->username,
-            'nomor' => $request->nomor,
-        ]);
+        try {
+            $nomors = $request->validate([
+                'username' => 'required|string|max:255',
+                'nomor' => 'required|numeric',
+            ]);
+            // dd($request);
+            Nomor::create([
+                'username' => $request->username,
+                'nomor' => $request->nomor,
+            ]);
 
-        return redirect()->route('rotator.index')->with('success', 'User created successfully');
+            return response()->json([
+                'success' => true,
+                'message' => 'User created successfully',
+                'data' => $nomors
+            ], 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => true,
+                'message' => 'User created successfully',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => true,
+                'message' => 'User created successfully',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function update(Request $request, $id)
     {
-        $nomor = Nomor::find($id);
-        if (!$nomor) {
-            return redirect()->back()->with('error', 'User not found');
+        try {
+            $nomor = Nomor::find($id);
+            if (!$nomor) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User not found'
+                ], 404);
+            }
+
+            $request->validate([
+                'username' => 'required|string|max:255',
+                'nomor' => 'required|numeric',
+            ]);
+
+            $nomor->username = $request->username;
+            $nomor->nomor = $request->nomor;
+
+            $nomor->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'User updated successfully',
+                'data' => $nomor
+            ], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $request->validate([
-            'username' => 'required|string|max:255',
-            'nomor' => 'required|numeric',
-        ]);
-
-        $nomor->username = $request->username;
-        $nomor->nomor = $request->nomor;
-
-        $nomor->save();
-
-        return redirect()->route('rotator.index')->with('success', 'User updated successfully');
     }
 
     public function destroy($id)
     {
         $nomor = Nomor::find($id);
         if (!$nomor) {
-            return redirect()->back()->with('error', 'User not found');
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ], 404);
         }
 
         $nomor->delete();
-        return redirect()->route('rotator.index')->with('success', 'User deleted successfully');
+        return response()->json([
+            'success' => true,
+            'message' => 'User deleted successfully'
+        ]);
     }
 
     public function generateLink($id)
     {
-        // Text message to be sent
         $text = $this->chatShow($id);
 
-        // Admin WhatsApp numbers from the Nomor table
         $admins = Nomor::pluck('nomor')->toArray();
 
-        // File to store the current admin index
+        if (empty($admins)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No admin numbers available'
+            ], 400);
+        }
+
         $indexFile = 'admin_index.txt';
 
-        // Initialize index if file does not exist
         if (!file_exists(storage_path($indexFile))) {
             $currentIndex = 0;
             file_put_contents(storage_path($indexFile), $currentIndex);
@@ -88,48 +138,48 @@ class NomorController extends Controller
             $currentIndex = (int)file_get_contents(storage_path($indexFile));
         }
 
-        // Select the next admin
         $adminNumber = $admins[$currentIndex];
 
-        // Update the index for the next user
         $nextIndex = ($currentIndex + 1) % count($admins);
         file_put_contents(storage_path($indexFile), $nextIndex);
 
-        // Generate the WhatsApp URL
         $url = "https://api.whatsapp.com/send?phone=" . $adminNumber . "&text=" . urlencode($text);
-        session()->flash('generated_url', $url);
+        // session()->flash('generated_url', $url);
 
-        return $url;
+        return response()->json([
+            'success' => true,
+            'message' => 'WhatsApp link generated successfully',
+            'data' => ['url' => $url]
+        ]);
     }
 
     public function showlink($id = null)
     {
-        // Call the generateLink method and get the URL
-        $url = $this->generateLink($id);
-
-        // Return the view with the generated URL
-        return redirect($url);
+        return $this->generateLink($id);
     }
 
     public function chatShow($id = null)
     {
-        // Jika $id adalah null atau tidak ditemukan, kembalikan string kosong
         if ($id === null) {
-            return "";
+            return response()->json([
+                'success' => false,
+                'message' => 'Property ID is required'
+            ], 400);
         }
 
-        // Coba menemukan property, jika tidak ditemukan kembalikan string kosong
         try {
             $property = Property::findOrFail($id);
 
-            // Format harga dengan pemisah ribuan
             $formattedPrice = number_format($property->price, 0, ',', '.');
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return "";
+            return response()->json([
+                'success' => false,
+                'message' => 'Property not found'
+            ], 404);
         }
 
         $detailProduct = url('/details-property/' . $property->id);
-        
+
         $text = $detailProduct . PHP_EOL . "🌟 Halo Admin Opendoorz" . PHP_EOL . PHP_EOL
             . "Saya tertarik dengan properti *" . $property->title . "* yang tersedia di website." . PHP_EOL . PHP_EOL
             . "🏡 *Nama Properti*: " . $property->title . PHP_EOL
@@ -138,6 +188,10 @@ class NomorController extends Controller
             . "Saya ingin mengetahui lebih lanjut tentang proses pembelian dan detail lainnya." . PHP_EOL
             . "Bisa tolong dibantu untuk informasinya? Terima kasih! 😊";
 
-        return $text;
+        return response()->json([
+            'success' => true,
+            'message' => 'Chat message generated successfully',
+            'data' => ['message' => $text]
+        ]);
     }
 }
