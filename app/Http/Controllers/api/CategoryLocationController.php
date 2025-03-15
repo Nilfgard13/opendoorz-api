@@ -18,55 +18,102 @@ class CategoryLocationController extends Controller
                 ->orWhere('description', 'LIKE', "%{$search}%");
         })->get();
 
-        $title = 'Category Location Admin';
-
-        return view('admin.categorylocation', compact('categorylocation', 'title'));
+        return response()->json([
+            'success' => true,
+            'message' => 'Location retrieved successfully',
+            'data' => $categorylocation
+        ]);
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
-        ]);
-        // dd($request);
-        CategoryLocation::create([
-            'name' => $request->name,
-            'description' => $request->description,
-        ]);
+        try {
+            $categorylocation = $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'required|string|max:255',
+            ]);
+            // dd($request);
+            CategoryLocation::create([
+                'name' => $request->name,
+                'description' => $request->description,
+            ]);
 
-        return redirect()->route('categorylocation.index')->with('success', 'Category created successfully');
+            return response()->json([
+                'success' => true,
+                'message' => 'Location created successfully',
+                'data' => $categorylocation
+            ], 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     // Update a user
     public function update(Request $request, $id)
     {
-        $categorylocation = CategoryLocation::find($id);
-        if (!$categorylocation) {
-            return redirect()->back()->with('error', 'Category not found');
+        try {
+            $categorylocation = CategoryLocation::find($id);
+            if (!$categorylocation) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Location not found'
+                ], 404);
+            }
+
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'required|string|max:255',
+            ]);
+
+            $categorylocation->name = $request->name;
+            $categorylocation->description = $request->description;
+
+            $categorylocation->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Location created successfully',
+                'data' => $categorylocation
+            ], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
-        ]);
-
-        $categorylocation->name = $request->name;
-        $categorylocation->description = $request->description;
-
-        $categorylocation->save();
-
-        return redirect()->route('categorylocation.index')->with('success', 'Category updated successfully');
     }
 
     public function destroy($id)
     {
         $categorylocation = CategoryLocation::find($id);
         if (!$categorylocation) {
-            return redirect()->back()->with('error', 'User not found');
+            return response()->json([
+                'success' => false,
+                'message' => 'Location not found'
+            ], 404);
         }
 
         $categorylocation->delete();
-        return redirect()->route('categorylocation.index')->with('success', 'Category deleted successfully');
+        return response()->json([
+            'success' => true,
+            'message' => 'Location deleted successfully'
+        ]);
     }
 }

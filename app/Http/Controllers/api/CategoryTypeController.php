@@ -18,55 +18,102 @@ class CategoryTypeController extends Controller
                 ->orWhere('description', 'LIKE', "%{$search}%");
         })->get();
 
-        $title = 'Category Type Admin';
-
-        return view('admin.category', compact('category', 'title'));
+        return response()->json([
+            'success' => true,
+            'message' => 'Type retrieved successfully',
+            'data' => $category
+        ]);
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
-        ]);
-        // dd($request);
-        CategoryType::create([
-            'name' => $request->name,
-            'description' => $request->description,
-        ]);
+        try {
+            $category = $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'required|string|max:255',
+            ]);
+            // dd($request);
+            CategoryType::create([
+                'name' => $request->name,
+                'description' => $request->description,
+            ]);
 
-        return redirect()->route('categorytype.index')->with('success', 'Category created successfully');
+            return response()->json([
+                'success' => true,
+                'message' => 'Type created successfully',
+                'data' => $category
+            ], 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     // Update a user
     public function update(Request $request, $id)
     {
-        $category = CategoryType::find($id);
-        if (!$category) {
-            return redirect()->back()->with('error', 'Category not found');
+        try {
+            $category = CategoryType::find($id);
+            if (!$category) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Type not found'
+                ], 404);
+            }
+
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'required|string|max:255',
+            ]);
+
+            $category->name = $request->name;
+            $category->description = $request->description;
+
+            $category->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Type updated successfully',
+                'data' => $category
+            ], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
-        ]);
-
-        $category->name = $request->name;
-        $category->description = $request->description;
-
-        $category->save();
-
-        return redirect()->route('categorytype.index')->with('success', 'Category updated successfully');
     }
 
     public function destroy($id)
     {
         $category = CategoryType::find($id);
         if (!$category) {
-            return redirect()->back()->with('error', 'User not found');
+            return response()->json([
+                'success' => false,
+                'message' => 'Type not found'
+            ], 404);
         }
 
         $category->delete();
-        return redirect()->route('categorytype.index')->with('success', 'Category deleted successfully');
+        return response()->json([
+            'success' => true,
+            'message' => 'Type deleted successfully'
+        ]);
     }
 }

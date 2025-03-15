@@ -23,9 +23,14 @@ class DashboardController extends Controller
 
         $landingPage = LandingPage::find(1);
 
-        $title = "Dashboard Admin";
-
-        return view('admin.home', compact('propertyCounts', 'title', 'landingPage'));
+        return response()->json([
+            'success' => true,
+            'message' => 'Property count retrieved successfully',
+            'data' => [
+                'property_counts' => $propertyCounts,
+                'landing_page' => $landingPage
+            ]
+        ]);
     }
 
     public function insertLandingPage(Request $request)
@@ -43,10 +48,9 @@ class DashboardController extends Controller
             'thumbnails.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4016',
         ]);
 
-        // Hapus semua data di tabel LandingPage
         $landingPages = LandingPage::all();
         foreach ($landingPages as $landingPage) {
-            // Hapus gambar di storage
+
             $existingImages = json_decode($landingPage->images, true) ?? [];
             $existingThumbnails = json_decode($landingPage->thumbnails, true) ?? [];
 
@@ -58,14 +62,11 @@ class DashboardController extends Controller
                 Storage::disk('public')->delete($thumbnail);
             }
 
-            // Hapus record dari database
             $landingPage->delete();
         }
 
-        // Reset Auto Increment ke 1
         DB::statement('ALTER TABLE landing_page AUTO_INCREMENT = 1');
 
-        // Handle upload gambar baru
         $images = [];
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
@@ -97,6 +98,10 @@ class DashboardController extends Controller
 
         // dd($request->number);
 
-        return redirect()->route('admin.dashboard')->with('success', 'Landing Page inserted successfully');
+        return response()->json([
+            'success' => true,
+            'message' => 'Landing Page inserted successfully',
+            'data' => $landingPage
+        ]);
     }
 }

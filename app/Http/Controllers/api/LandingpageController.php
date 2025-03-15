@@ -24,18 +24,29 @@ class LandingpageController extends Controller
 
         $landingPage = LandingPage::find(1);
 
-        $title = 'Home Page';
-
-        return view('user.home', compact('property', 'title', 'propertyCounts', 'landingPage', 'categoryCounts'));
+        return response()->json([
+            'success' => true,
+            'message' => 'Home data retrieved successfully',
+            'data' => [
+                'property' => $property,
+                'property_counts' => $propertyCounts,
+                'category_counts' => $categoryCounts,
+                'landing_page' => $landingPage,
+            ]
+        ]);
     }
 
     public function contactIndex(Request $request)
     {
         $landingPage = LandingPage::find(1);
 
-        $title = 'Contact Page';
-
-        return view('user.contact', compact('title', 'landingPage'));
+        return response()->json([
+            'success' => true,
+            'message' => 'Contact page data retrieved successfully',
+            'data' => [
+                'landing_page' => $landingPage,
+            ]
+        ]);
     }
 
     public function propertyIndex(Request $request)
@@ -59,9 +70,15 @@ class LandingpageController extends Controller
                     });
             })->orderBy('id', 'desc')->paginate(9);
 
-        $title = 'Property Page';
-
-        return view('user.property', compact('property', 'title', 'types', 'landingPage'));
+        return response()->json([
+            'success' => true,
+            'message' => 'Property data retrieved successfully',
+            'data' => [
+                'property' => $property,
+                'types' => $types,
+                'landing_page' => $landingPage,
+            ]
+        ]);
     }
 
     public function detailsIndex($id)
@@ -76,6 +93,14 @@ class LandingpageController extends Controller
 
         $title = 'Detail Page';
 
-        return view('user.details-property', compact('property', 'title', 'otherProperties', 'landingPage'));
+        return response()->json([
+            'success' => true,
+            'message' => 'Property details retrieved successfully',
+            'data' => [
+                'property' => $property,
+                'other_properties' => $otherProperties,
+                'landing_page' => $landingPage,
+            ]
+        ]);
     }
 }
