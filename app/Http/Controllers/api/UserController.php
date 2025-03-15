@@ -8,18 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 
 
-/**
- * @OA\Info(
- *      title="API Documentation",
- *      version="1.0",
- *      description="Dokumentasi API untuk CRUD User"
- * )
- *
- * @OA\Tag(
- *     name="Users",
- *     description="API untuk mengelola User"
- * )
- */
+
 class UserController extends Controller
 {
     /**

@@ -7,8 +7,51 @@ use App\Models\Property;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+/**
+ * @OA\Info(
+ *      title="API Documentation",
+ *      version="1.0",
+ *      description="Dokumentasi API untuk CRUD Admin WA Rotator"
+ * )
+ *
+ * @OA\Tag(
+ *     name="Rotator",
+ *     description="API untuk mengelola data Admin WA Rotator"
+ * )
+ */
 class NomorController extends Controller
 {
+    /**
+     * @OA\Get(
+     *     path="/api/admin-admin",
+     *     tags={"Admins"},
+     *     summary="Menampilkan daftar pengguna",
+     *     description="Mengambil daftar pengguna dengan fitur pencarian berdasarkan username, email, atau role",
+     *     @OA\Parameter(
+     *         name="search",
+     *         in="query",
+     *         description="Filter Admin berdasarkan username atau nomor hp",
+     *         required=false,
+     *         @OA\Schema(type="string", example="Akmal")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Admin retrieved successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Users retrieved successfully"),
+     *             @OA\Property(property="data", type="array",
+     *                 @OA\Items(
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="username", type="string", example="john_doe"),
+     *                     @OA\Property(property="nomor", type="string", example="6281357477967"),
+     *                 )
+     *             )
+     *         )
+     *     )
+     * )
+     */
     public function index(Request $request)
     {
         $search = $request->input('search');
@@ -25,6 +68,24 @@ class NomorController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/nomor-create",
+     *     summary="Create a new nomor",
+     *     tags={"Admins"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"username","nomor"},
+     *             @OA\Property(property="username", type="string", example="johndoe"),
+     *             @OA\Property(property="nomor", type="string", example="6281357477967"),
+     *         )
+     *     ),
+     *     @OA\Response(response=201, description="Nomor created successfully"),
+     *     @OA\Response(response=422, description="Validation error"),
+     *     @OA\Response(response=500, description="Internal server error")
+     * )
+     */
     public function store(Request $request)
     {
         try {
@@ -58,6 +119,32 @@ class NomorController extends Controller
         }
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/nomor-update/{id}",
+     *     summary="Update a nomor",
+     *     tags={"Admins"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Nomor ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"username","nomor"},
+     *             @OA\Property(property="username", type="string", example="john_updated"),
+     *             @OA\Property(property="nomor", type="string", example="6281357477999"),
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Nomor updated successfully"),
+     *     @OA\Response(response=404, description="Nomor not found"),
+     *     @OA\Response(response=422, description="Validation error"),
+     *     @OA\Response(response=500, description="Internal server error")
+     * )
+     */
     public function update(Request $request, $id)
     {
         try {
@@ -99,6 +186,38 @@ class NomorController extends Controller
         }
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/nomor-delete/{id}",
+     *     summary="Delete a nomor by ID",
+     *     tags={"Admins"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Nomor ID",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Nomor deleted successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Nomor deleted successfully")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Nomor not found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Nomor not found")
+     *         )
+     *     )
+     * )
+     */
     public function destroy($id)
     {
         $nomor = Nomor::find($id);
@@ -153,11 +272,74 @@ class NomorController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/show-link/{id?}",
+     *     summary="Generate and show a link",
+     *     tags={"Admins"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=false,
+     *         description="Optional ID for generating a link",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Link generated successfully"),
+     *     @OA\Response(response=400, description="Invalid request"),
+     *     @OA\Response(response=500, description="Internal server error")
+     * )
+     */
     public function showlink($id = null)
     {
         return $this->generateLink($id);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/chat-show/{id}",
+     *     summary="Generate a chat message for a property",
+     *     tags={"Property"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Property ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Chat message generated successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Chat message generated successfully"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(property="message", type="string", example="🌟 Halo Admin Opendoorz... (chat content)")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Property ID is required",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Property ID is required")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Property not found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Property not found")
+     *         )
+     *     )
+     * )
+     */
     public function chatShow($id = null)
     {
         if ($id === null) {

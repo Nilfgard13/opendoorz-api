@@ -2,10 +2,2012 @@
     "openapi": "3.0.0",
     "info": {
         "title": "API Documentation",
-        "description": "Dokumentasi API untuk CRUD User",
+        "description": "Dokumentasi API untuk CRUD Admin WA Rotator",
         "version": "1.0"
     },
     "paths": {
+        "/api/category-location-admin": {
+            "get": {
+                "tags": [
+                    "Category Locations"
+                ],
+                "summary": "Menampilkan daftar Lokasi",
+                "description": "Mengambil daftar Lokasi dengan fitur pencarian berdasarkan name atau deskripsi",
+                "operationId": "8e9f39379f391dc2b8700a77b152fa03",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Filter Lokasi berdasarkan name atau deskripsi",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Malang"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Users retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Users retrieved successfully"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "john_doe"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "........."
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/category-location-create": {
+            "post": {
+                "tags": [
+                    "Category Locations"
+                ],
+                "summary": "Create a new category location",
+                "operationId": "d8bfbf64c43ff1635f92c5d5a6e0f88a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "description"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Category location created successfully"
+                    },
+                    "422": {
+                        "description": "Validation failed"
+                    }
+                }
+            }
+        },
+        "/api/category-location-update/{id}": {
+            "put": {
+                "tags": [
+                    "Category Locations"
+                ],
+                "summary": "Update an existing category location",
+                "operationId": "68beef3b6c5ed2554dbccad6fc734c4f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the category location",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "description"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Category location updated successfully"
+                    },
+                    "404": {
+                        "description": "Category location not found"
+                    }
+                }
+            }
+        },
+        "/api/category-location-delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Category Locations"
+                ],
+                "summary": "Delete a category location",
+                "operationId": "24ed08ce839417f4c7bc09445035deb9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the category location",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Category location deleted successfully"
+                    },
+                    "404": {
+                        "description": "Category location not found"
+                    }
+                }
+            }
+        },
+        "/api/category-admin": {
+            "get": {
+                "tags": [
+                    "Category Types"
+                ],
+                "summary": "Menampilkan daftar Lokasi",
+                "description": "Mengambil daftar Lokasi dengan fitur pencarian berdasarkan name atau deskripsi",
+                "operationId": "86920feeadb51567896daedea5641941",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Filter Lokasi berdasarkan name atau deskripsi",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "villa"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Users retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Users retrieved successfully"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "john_doe"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "........."
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/category-create": {
+            "post": {
+                "tags": [
+                    "Category Types"
+                ],
+                "summary": "Create a new category type",
+                "operationId": "204a0cbd11a146b4fc33bfe3654e8e15",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "description"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Type created successfully"
+                    },
+                    "422": {
+                        "description": "Validation failed"
+                    },
+                    "500": {
+                        "description": "Something went wrong"
+                    }
+                }
+            }
+        },
+        "/api/category-update/{id}": {
+            "put": {
+                "tags": [
+                    "Category Types"
+                ],
+                "summary": "Update an existing category type",
+                "operationId": "41111e666c60d1cf015593ec69e322ca",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Category Type ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "description"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Type updated successfully"
+                    },
+                    "404": {
+                        "description": "Type not found"
+                    },
+                    "422": {
+                        "description": "Validation failed"
+                    },
+                    "500": {
+                        "description": "Something went wrong"
+                    }
+                }
+            }
+        },
+        "/api/category-delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Category Types"
+                ],
+                "summary": "Delete a category type",
+                "operationId": "2daa6786b7c15a801a10a4a1290d29f0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Category Type ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Type deleted successfully"
+                    },
+                    "404": {
+                        "description": "Type not found"
+                    }
+                }
+            }
+        },
+        "/api/home-admin": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Menghitung jumlah properti berdasarkan status",
+                "description": "Mengambil jumlah properti berdasarkan status seperti 'sold', 'reserved', 'on progress', 'available', serta total properti",
+                "operationId": "bb6ad63a4385de65a5f36661aa894fb8",
+                "responses": {
+                    "200": {
+                        "description": "Property count retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Property count retrieved successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "property_counts": {
+                                                    "properties": {
+                                                        "sold": {
+                                                            "type": "integer",
+                                                            "example": 10
+                                                        },
+                                                        "on_reserved": {
+                                                            "type": "integer",
+                                                            "example": 5
+                                                        },
+                                                        "on_progress": {
+                                                            "type": "integer",
+                                                            "example": 8
+                                                        },
+                                                        "available": {
+                                                            "type": "integer",
+                                                            "example": 12
+                                                        },
+                                                        "total": {
+                                                            "type": "integer",
+                                                            "example": 35
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "landing_page": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "address": {
+                                                            "type": "string",
+                                                            "example": "Jl. Sudirman No. 10, Jakarta"
+                                                        },
+                                                        "number": {
+                                                            "type": "string",
+                                                            "example": "08123456789"
+                                                        },
+                                                        "email": {
+                                                            "type": "string",
+                                                            "example": "contact@realestate.com"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/landing-page-update": {
+            "post": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Menambahkan atau memperbarui data Landing Page",
+                "description": "Menghapus data landing page yang ada dan menambahkan data baru termasuk gambar dan thumbnail",
+                "operationId": "2db8b807a8dc002011722e0b1d529b8c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Jl. Sudirman No. 10, Jakarta"
+                                    },
+                                    "number": {
+                                        "type": "string",
+                                        "example": "08123456789"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "contact@realestate.com"
+                                    },
+                                    "slogan": {
+                                        "type": "string",
+                                        "example": "Temukan Rumah Impian Anda"
+                                    },
+                                    "url": {
+                                        "type": "string",
+                                        "example": "https://realestate.com"
+                                    },
+                                    "url_ig": {
+                                        "type": "string",
+                                        "example": "https://instagram.com/realestate"
+                                    },
+                                    "experience": {
+                                        "type": "integer",
+                                        "example": 10
+                                    },
+                                    "gmap": {
+                                        "type": "string",
+                                        "example": "https://maps.google.com/example"
+                                    },
+                                    "images": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    },
+                                    "thumbnails": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Landing Page inserted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Landing Page inserted successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "address": {
+                                                    "type": "string",
+                                                    "example": "Jl. Sudirman No. 10, Jakarta"
+                                                },
+                                                "number": {
+                                                    "type": "string",
+                                                    "example": "08123456789"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "contact@realestate.com"
+                                                },
+                                                "slogan": {
+                                                    "type": "string",
+                                                    "example": "Temukan Rumah Impian Anda"
+                                                },
+                                                "url": {
+                                                    "type": "string",
+                                                    "example": "https://realestate.com"
+                                                },
+                                                "url_ig": {
+                                                    "type": "string",
+                                                    "example": "https://instagram.com/realestate"
+                                                },
+                                                "experience": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "gmap": {
+                                                    "type": "string",
+                                                    "example": "https://maps.google.com/example"
+                                                },
+                                                "images": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "storage/landing_page_images/image1.jpg"
+                                                    }
+                                                },
+                                                "thumbnails": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "storage/landing_page_thumbnails/thumb1.jpg"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/": {
+            "get": {
+                "tags": [
+                    "Landing Page"
+                ],
+                "summary": "Retrieve data for home page view (company profile)",
+                "description": "Mengambil data properti terbaru, jumlah properti, jumlah kategori, dan data landing page",
+                "operationId": "d48fa38c9bf52224d926fcd70177c2d3",
+                "responses": {
+                    "200": {
+                        "description": "Home data retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Home data retrieved successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "property": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "title": {
+                                                                "type": "string",
+                                                                "example": "Modern House"
+                                                            },
+                                                            "status": {
+                                                                "type": "string",
+                                                                "example": "available"
+                                                            },
+                                                            "price": {
+                                                                "type": "integer",
+                                                                "example": 500000000
+                                                            },
+                                                            "location": {
+                                                                "type": "string",
+                                                                "example": "Jakarta"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "property_counts": {
+                                                    "properties": {
+                                                        "sold": {
+                                                            "type": "integer",
+                                                            "example": 5
+                                                        },
+                                                        "total": {
+                                                            "type": "integer",
+                                                            "example": 20
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "category_counts": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "landing_page": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "title": {
+                                                            "type": "string",
+                                                            "example": "Welcome to Our Real Estate"
+                                                        },
+                                                        "content": {
+                                                            "type": "string",
+                                                            "example": "Find your dream home with us."
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/property": {
+            "get": {
+                "tags": [
+                    "Landing Page"
+                ],
+                "summary": "Dsiplaying List property",
+                "description": "Mengambil daftar properti yang tersedia dengan fitur pencarian berdasarkan judul, deskripsi, harga, alamat, tempat parkir, dan kategori",
+                "operationId": "c4132e054da83f6e8e048be575d90656",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Filter properti berdasarkan kata kunci",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Malang"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Property data retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Property data retrieved successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "property": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "title": {
+                                                                "type": "string",
+                                                                "example": "Modern House"
+                                                            },
+                                                            "description": {
+                                                                "type": "string",
+                                                                "example": "A beautiful house with a garden"
+                                                            },
+                                                            "price": {
+                                                                "type": "integer",
+                                                                "example": 750000000
+                                                            },
+                                                            "address": {
+                                                                "type": "string",
+                                                                "example": "Jl. Sudirman No. 10, Jakarta"
+                                                            },
+                                                            "parking": {
+                                                                "type": "integer",
+                                                                "example": 2
+                                                            },
+                                                            "category_type": {
+                                                                "type": "string",
+                                                                "example": "Residential"
+                                                            },
+                                                            "category_location": {
+                                                                "type": "string",
+                                                                "example": "Jakarta"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "types": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Residential"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "landing_page": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "title": {
+                                                            "type": "string",
+                                                            "example": "Find Your Dream Home"
+                                                        },
+                                                        "content": {
+                                                            "type": "string",
+                                                            "example": "The best properties in town."
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/details-property/{id}": {
+            "get": {
+                "tags": [
+                    "Landing Page"
+                ],
+                "summary": "Displaying property details",
+                "description": "Mengambil informasi lengkap dari properti berdasarkan ID",
+                "operationId": "e6a544ef14960677a6d2573387bf8d3c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID properti",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Property details retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Property details retrieved successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "property": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "title": {
+                                                            "type": "string",
+                                                            "example": "Modern House"
+                                                        },
+                                                        "description": {
+                                                            "type": "string",
+                                                            "example": "A beautiful house with a garden"
+                                                        },
+                                                        "price": {
+                                                            "type": "integer",
+                                                            "example": 750000000
+                                                        },
+                                                        "address": {
+                                                            "type": "string",
+                                                            "example": "Jl. Sudirman No. 10, Jakarta"
+                                                        },
+                                                        "parking": {
+                                                            "type": "integer",
+                                                            "example": 2
+                                                        },
+                                                        "category_type": {
+                                                            "type": "string",
+                                                            "example": "Residential"
+                                                        },
+                                                        "category_location": {
+                                                            "type": "string",
+                                                            "example": "Jakarta"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "other_properties": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 2
+                                                            },
+                                                            "title": {
+                                                                "type": "string",
+                                                                "example": "Luxury Apartment"
+                                                            },
+                                                            "price": {
+                                                                "type": "integer",
+                                                                "example": 1000000000
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "landing_page": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "title": {
+                                                            "type": "string",
+                                                            "example": "Find Your Dream Home"
+                                                        },
+                                                        "content": {
+                                                            "type": "string",
+                                                            "example": "The best properties in town."
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/admin-admin": {
+            "get": {
+                "tags": [
+                    "Admins"
+                ],
+                "summary": "Menampilkan daftar pengguna",
+                "description": "Mengambil daftar pengguna dengan fitur pencarian berdasarkan username, email, atau role",
+                "operationId": "e192d769ea9e1b70795e32eb7059269e",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Filter Admin berdasarkan username atau nomor hp",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Akmal"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Admin retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Users retrieved successfully"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "username": {
+                                                        "type": "string",
+                                                        "example": "john_doe"
+                                                    },
+                                                    "nomor": {
+                                                        "type": "string",
+                                                        "example": "6281357477967"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/nomor-create": {
+            "post": {
+                "tags": [
+                    "Admins"
+                ],
+                "summary": "Create a new nomor",
+                "operationId": "a2b2936ce37dddf11866a14ce0999dec",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "username",
+                                    "nomor"
+                                ],
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "example": "johndoe"
+                                    },
+                                    "nomor": {
+                                        "type": "string",
+                                        "example": "6281357477967"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Nomor created successfully"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/nomor-update/{id}": {
+            "put": {
+                "tags": [
+                    "Admins"
+                ],
+                "summary": "Update a nomor",
+                "operationId": "99ba04efe1dc89e9972e134eadc92aa4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Nomor ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "username",
+                                    "nomor"
+                                ],
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "example": "john_updated"
+                                    },
+                                    "nomor": {
+                                        "type": "string",
+                                        "example": "6281357477999"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Nomor updated successfully"
+                    },
+                    "404": {
+                        "description": "Nomor not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/nomor-delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Admins"
+                ],
+                "summary": "Delete a nomor by ID",
+                "operationId": "39ac09bcc7262727af0508979b2b26e3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Nomor ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Nomor deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Nomor deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Nomor not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Nomor not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/show-link/{id?}": {
+            "get": {
+                "tags": [
+                    "Admins"
+                ],
+                "summary": "Generate and show a link",
+                "operationId": "f17f723bc36e5da29bf130284439b170",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Optional ID for generating a link",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Link generated successfully"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/chat-show/{id}": {
+            "get": {
+                "tags": [
+                    "Property"
+                ],
+                "summary": "Generate a chat message for a property",
+                "operationId": "a5f3ea84cd5ed266c9b7d0807f20dc8e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Property ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Chat message generated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Chat message generated successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "🌟 Halo Admin Opendoorz... (chat content)"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Property ID is required",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Property ID is required"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Property not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Property not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/property-admin": {
+            "get": {
+                "tags": [
+                    "Property"
+                ],
+                "summary": "Retrieved List property",
+                "description": "Mengambil daftar properti dengan fitur pencarian berdasarkan title, description, price, address, parking, atau kategori",
+                "operationId": "aef3bf83de2d72eb9a1847e1fc570c89",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Filter properti berdasarkan kata kunci",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Malang"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Property retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Property retrieved successfully"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "title": {
+                                                        "type": "string",
+                                                        "example": "Rumah Mewah"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "Rumah mewah dengan 3 kamar tidur"
+                                                    },
+                                                    "price": {
+                                                        "type": "integer",
+                                                        "example": 1500000000
+                                                    },
+                                                    "address": {
+                                                        "type": "string",
+                                                        "example": "Jl. Merdeka No.1"
+                                                    },
+                                                    "parking": {
+                                                        "type": "integer",
+                                                        "example": 2
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/property-create": {
+            "post": {
+                "tags": [
+                    "Property"
+                ],
+                "summary": "Add new property",
+                "description": "Menambahkan properti baru dengan detail lengkap",
+                "operationId": "fe37a20aa97466f7b4c0d63d2e5b72de",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "description",
+                                    "price",
+                                    "bedrooms",
+                                    "bathrooms",
+                                    "area",
+                                    "floor",
+                                    "address",
+                                    "status",
+                                    "category_type_id",
+                                    "category_location_id"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Rumah Minimalis"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Rumah minimalis dengan desain modern"
+                                    },
+                                    "price": {
+                                        "type": "integer",
+                                        "example": 1200000000
+                                    },
+                                    "bedrooms": {
+                                        "type": "integer",
+                                        "example": 3
+                                    },
+                                    "bathrooms": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "area": {
+                                        "type": "integer",
+                                        "example": 200
+                                    },
+                                    "floor": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Jl. Kenangan No. 10"
+                                    },
+                                    "parking": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "Available"
+                                    },
+                                    "category_type_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "category_location_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Property created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Property created successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "title": {
+                                                    "type": "string",
+                                                    "example": "Rumah Minimalis"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation failed"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/property-update/{id}": {
+            "put": {
+                "tags": [
+                    "Property"
+                ],
+                "summary": "Update property",
+                "description": "Memperbarui detail properti berdasarkan ID",
+                "operationId": "7d7fc0e3d7b30c8b7209b8ed76f80baa",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID properti yang ingin diperbarui",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "description",
+                                    "price",
+                                    "bedrooms",
+                                    "bathrooms",
+                                    "area",
+                                    "floor",
+                                    "address",
+                                    "status",
+                                    "category_type_id",
+                                    "category_location_id"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Rumah Mewah"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Rumah mewah dengan kolam renang"
+                                    },
+                                    "price": {
+                                        "type": "integer",
+                                        "example": 2000000000
+                                    },
+                                    "bedrooms": {
+                                        "type": "integer",
+                                        "example": 4
+                                    },
+                                    "bathrooms": {
+                                        "type": "integer",
+                                        "example": 3
+                                    },
+                                    "area": {
+                                        "type": "integer",
+                                        "example": 250
+                                    },
+                                    "floor": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Jl. Sudirman No. 50"
+                                    },
+                                    "parking": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "Sold"
+                                    },
+                                    "category_type_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "category_location_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Property updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Property updated successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "title": {
+                                                    "type": "string",
+                                                    "example": "Rumah Mewah"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Property not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Property not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/property-delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Property"
+                ],
+                "summary": "Menghapus properti",
+                "description": "Delete Property",
+                "operationId": "da88ee5c487b97f9c8f3999eb6189e27",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID properti yang ingin dihapus",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Property deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Property deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Property not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Property not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/review-admin": {
+            "get": {
+                "tags": [
+                    "Reviews"
+                ],
+                "summary": "Menampilkan daftar Review",
+                "description": "Mengambil daftar Review dengan fitur pencarian berdasarkan nama, email, nomor, atau deskripsi",
+                "operationId": "b4dd9b21f18fa2978b572cbc1b6ec23d",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Filter Review berdasarkan nama, email, nomor, atau deskripsi",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Akmal"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Reviews retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Reviews retrieved successfully"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "John Doe"
+                                                    },
+                                                    "email": {
+                                                        "type": "string",
+                                                        "example": "john@example.com"
+                                                    },
+                                                    "nomor": {
+                                                        "type": "string",
+                                                        "example": "08123456789"
+                                                    },
+                                                    "deskripsi": {
+                                                        "type": "string",
+                                                        "example": "Pelayanan sangat baik!"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/review-create": {
+            "post": {
+                "tags": [
+                    "Reviews"
+                ],
+                "summary": "Membuat Review baru",
+                "description": "Menyimpan review baru ke dalam database",
+                "operationId": "73e6452a1d20cc222eef1e416683e44e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "nomor",
+                                    "deskripsi"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john@example.com"
+                                    },
+                                    "nomor": {
+                                        "type": "string",
+                                        "example": "08123456789"
+                                    },
+                                    "deskripsi": {
+                                        "type": "string",
+                                        "example": "Pelayanan sangat baik!"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Review created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Review created successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "John Doe"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "john@example.com"
+                                                },
+                                                "nomor": {
+                                                    "type": "string",
+                                                    "example": "08123456789"
+                                                },
+                                                "deskripsi": {
+                                                    "type": "string",
+                                                    "example": "Pelayanan sangat baik!"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation error"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error details"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/review-admin/{id}": {
+            "delete": {
+                "tags": [
+                    "Reviews"
+                ],
+                "summary": "Menghapus Review",
+                "description": "Menghapus Review berdasarkan ID",
+                "operationId": "d74065dac8bc8616fc3f7afe99744eb2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID Review yang akan dihapus",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Review deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Review deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Review not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Review not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/user-admin": {
             "get": {
                 "tags": [
@@ -275,8 +2277,36 @@
     },
     "tags": [
         {
+            "name": "Category Locations",
+            "description": "Category Locations"
+        },
+        {
+            "name": "Category Types",
+            "description": "Category Types"
+        },
+        {
+            "name": "Dashboard",
+            "description": "Dashboard"
+        },
+        {
+            "name": "Landing Page",
+            "description": "Landing Page"
+        },
+        {
+            "name": "Admins",
+            "description": "Admins"
+        },
+        {
+            "name": "Property",
+            "description": "Property"
+        },
+        {
+            "name": "Reviews",
+            "description": "Reviews"
+        },
+        {
             "name": "Users",
-            "description": "API untuk mengelola User"
+            "description": "Users"
         }
     ]
 }
